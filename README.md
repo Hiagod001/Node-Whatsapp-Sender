@@ -1,85 +1,41 @@
 # Node WhatsApp Sender
 
-Aplicacao leve em Node.js para conectar o WhatsApp Web, exibir QR Code no navegador e enviar mensagens de forma manual ou em lote, sem Docker.
+Projeto em Node.js para conectar uma sessao do WhatsApp Web, abrir o QR Code no navegador e fazer envios pelo painel ou em lote.
 
-## Visao Geral
+A ideia aqui foi manter tudo leve e simples de rodar, sem Docker e sem uma estrutura pesada.
 
-Este projeto foi pensado para quem quer uma solucao simples de usar no Windows ou em qualquer ambiente com Node.js, sem depender de containers ou de uma stack pesada.
+## O que ele faz
 
-Com ele, voce consegue:
+- conecta o WhatsApp por QR Code
+- envia mensagem individual pelo painel
+- envia em lote usando uma lista de numeros e um arquivo TXT de mensagens
+- permite desconectar a sessao atual e gerar um novo QR Code
 
-- conectar uma sessao do WhatsApp por QR Code
-- enviar mensagens individualmente pelo painel
-- enviar mensagens em lote a partir de arquivos locais
-- desconectar a sessao atual e gerar um novo QR Code
-- manter uma estrutura simples para compartilhar, versionar ou adaptar
+## Como rodar
 
-## Tecnologias
-
-- Node.js
-- Express
-- Baileys
-- HTML + JavaScript no painel web
-
-## Requisitos
-
-- Node.js 20 ou superior
-
-## Instalacao
+Com Node.js instalado:
 
 ```bash
 npm install
-```
-
-## Como Executar
-
-```bash
 npm start
 ```
 
-Depois disso, abra no navegador:
+Depois abra:
 
 ```text
 http://localhost:3000
 ```
 
-## Funcionalidades
+## Como funciona o lote
 
-- Conexao via QR Code diretamente no painel
-- Reconexao automatica da sessao
-- Envio individual de mensagens
-- Envio em lote usando planilha de numeros
-- Leitura de mensagens formatadas em arquivo TXT
-- Sorteio aleatorio entre varias mensagens, quando houver mais de uma no TXT
-- Botao para desconectar o WhatsApp e gerar um novo QR Code
-
-## Estrutura do Projeto
-
-```text
-.
-|-- Planilha/
-|   |-- COMO_USAR.txt
-|   |-- mensagens.txt
-|   `-- numeros.csv
-|-- public/
-|   `-- index.html
-|-- .gitignore
-|-- package-lock.json
-|-- package.json
-|-- README.md
-`-- server.js
-```
-
-## Como Funciona o Envio em Lote
-
-O sistema usa dois arquivos dentro da pasta `Planilha/`:
+O envio em lote usa dois arquivos dentro da pasta `Planilha`:
 
 - `Planilha/numeros.csv`
 - `Planilha/mensagens.txt`
 
-### Arquivo de Numeros
+### numeros.csv
 
-O arquivo `numeros.csv` deve conter apenas a coluna `numero`:
+Deixe nesse formato:
 
 ```csv
 numero
@@ -88,17 +44,13 @@ numero
 5531977777777
 ```
 
-Regras:
+Sempre com DDI + DDD + numero.
 
-- use DDI + DDD + numero
-- uma linha equivale a um destinatario
-- numeros duplicados sao tratados como um unico envio por execucao
+### mensagens.txt
 
-### Arquivo de Mensagens
+Aqui voce escreve a mensagem do jeito que quer que ela seja enviada, com as quebras de linha preservadas.
 
-O arquivo `mensagens.txt` preserva a formatacao original, incluindo quebras de linha.
-
-Exemplo com uma unica mensagem:
+Exemplo:
 
 ```text
 Boa tarde!
@@ -109,61 +61,44 @@ Para reinvidicar responda com "Quero"
 (Condicoes sao aplicadas para resgate da promocao)
 ```
 
-Exemplo com varias mensagens para sorteio aleatorio:
+Se quiser deixar mais de uma mensagem para sorteio aleatorio, separe usando:
 
 ```text
-Mensagem A
+---
+```
+
+Exemplo:
+
+```text
+Mensagem 1
 
 ---
 
-Mensagem B
-
----
-
-Mensagem C
+Mensagem 2
 ```
 
-Quando houver mais de uma mensagem no arquivo, o sistema escolhe uma aleatoriamente para cada numero do lote.
-
-## Fluxo de Uso
-
-1. Inicie a aplicacao com `npm start`
-2. Acesse `http://localhost:3000`
-3. Leia o QR Code com o WhatsApp
-4. Escolha entre:
-   - envio individual pelo painel
-   - envio em lote pelos arquivos da pasta `Planilha`
-5. Se precisar trocar de conta, use a opcao de desconectar para gerar um novo QR Code
-
-## Sessao do WhatsApp
-
-A sessao autenticada fica salva localmente na pasta:
+## Estrutura
 
 ```text
-auth_info/
+.
+|-- Planilha/
+|   |-- COMO_USAR.txt
+|   |-- mensagens.txt
+|   `-- numeros.csv
+|-- public/
+|   `-- index.html
+|-- package.json
+|-- package-lock.json
+`-- server.js
 ```
 
-Isso evita a necessidade de ler o QR Code toda vez.
+## Uso no dia a dia
 
-Se quiser forcar uma nova conexao:
+1. Rode o projeto com `npm start`
+2. Leia o QR Code no navegador
+3. Use o painel para envio individual ou envio em lote
+4. Se quiser trocar a conta conectada, use o botao para desconectar e gerar um novo QR Code
 
-- use o botao de desconectar no painel
-- ou apague a pasta `auth_info/`
+## Observacao
 
-## Arquivos que Nao Devem Ir para o Git
-
-Estes itens sao locais e nao devem ser publicados:
-
-- `node_modules/`
-- `auth_info/`
-- logs temporarios
-
-## Observacoes
-
-- o projeto foi estruturado para ser simples de adaptar
-- o painel funciona localmente, sem Docker
-- a pasta `Planilha/` pode ser trocada por outro fluxo de importacao no futuro
-
-## Licenca
-
-Defina a licenca que preferir antes de publicar em producao ou compartilhar comercialmente.
+Depois que a sessao for conectada uma vez, ela fica salva localmente para nao precisar ler o QR toda hora. Se quiser forcar uma nova conexao, basta usar a opcao de desconectar no painel.
