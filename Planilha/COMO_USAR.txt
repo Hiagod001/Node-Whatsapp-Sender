@@ -1,0 +1,34 @@
+PASTA DE LEITURA AUTOMATICA
+
+Agora o sistema usa dois arquivos:
+
+1. Numeros:
+node-app\Planilha\numeros.csv
+
+2. Mensagens:
+node-app\Planilha\mensagens.txt
+
+Formato do CSV de numeros:
+
+numero
+5534998258557
+5534993401663
+
+Regras do arquivo de numeros:
+
+1. A coluna "numero" deve conter DDI + DDD + numero.
+2. Uma linha equivale a um destinatario.
+3. Salve em CSV separado por virgula.
+
+Regras do arquivo de mensagens:
+
+1. O texto deve ser escrito em node-app\Planilha\mensagens.txt
+2. As quebras de linha serao preservadas no envio.
+3. Se quiser varias mensagens para sorteio aleatorio, separe cada uma com uma linha contendo apenas:
+
+---
+
+Origem automatica dos dados:
+
+- Numeros: Planilha\numeros.csv
+- Mensagens: Planilha\mensagens.txt

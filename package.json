@@ -1,0 +1,16 @@
+{
+  "name": "bot-mensagens-whatsapp-node",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Versao leve em Node.js para conectar WhatsApp e enviar mensagens sem Docker.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "^7.0.0-rc.9",
+    "express": "^4.21.2",
+    "pino": "^9.9.4"
+  }
+}
