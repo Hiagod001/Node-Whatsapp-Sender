@@ -1,104 +1,79 @@
 # Node WhatsApp Sender
 
-Projeto em Node.js para conectar uma sessao do WhatsApp Web, abrir o QR Code no navegador e fazer envios pelo painel ou em lote.
+![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?style=for-the-badge&logo=node.js&logoColor=white)
+![Express](https://img.shields.io/badge/Express-Painel-111111?style=for-the-badge&logo=express&logoColor=white)
+![WhatsApp](https://img.shields.io/badge/WhatsApp-Baileys-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)
 
-A ideia aqui foi manter tudo leve e simples de rodar, sem Docker e sem uma estrutura pesada.
+Aplicação leve em Node.js para conectar uma sessão do WhatsApp Web por QR Code e enviar mensagens individuais ou em lote a partir de arquivos locais.
 
-## O que ele faz
+## Recursos
 
-- conecta o WhatsApp por QR Code
-- envia mensagem individual pelo painel
-- envia em lote usando uma lista de numeros e um arquivo TXT de mensagens
-- permite desconectar a sessao atual e gerar um novo QR Code
+- Conexão do WhatsApp via QR Code exibido no painel.
+- Envio individual informando número e mensagem.
+- Envio em lote usando `Planilha/numeros.csv` e `Planilha/mensagens.txt`.
+- Sorteio de mensagens quando houver mais de uma opção no arquivo.
+- Reinício da sessão para gerar um novo QR Code.
+- Interface web simples para operação local.
 
-## Como rodar
+<details>
+<summary><strong>Como funciona o envio em lote</strong></summary>
 
-Com Node.js instalado:
+1. Os números são carregados de `Planilha/numeros.csv`.
+2. As mensagens são carregadas de `Planilha/mensagens.txt`.
+3. O sistema valida os números, monta o JID do WhatsApp e faz o envio.
+4. O painel retorna o total processado e o status da operação.
+
+</details>
+
+## Instalação
 
 ```bash
 npm install
 npm start
 ```
 
-Depois abra:
+Acesse:
 
 ```text
 http://localhost:3000
 ```
 
-## Como funciona o lote
+## Arquivos de Entrada
 
-O envio em lote usa dois arquivos dentro da pasta `Planilha`:
+### `Planilha/numeros.csv`
 
-- `Planilha/numeros.csv`
-- `Planilha/mensagens.txt`
-
-### numeros.csv
-
-Deixe nesse formato:
+Use um número por linha ou uma coluna simples com telefones. Inclua DDD e evite caracteres desnecessários.
 
 ```csv
-numero
-5534999999999
-5534988888888
-5531977777777
+34999999999
+34988888888
 ```
 
-Sempre com DDI + DDD + numero.
+### `Planilha/mensagens.txt`
 
-### mensagens.txt
-
-Aqui voce escreve a mensagem do jeito que quer que ela seja enviada, com as quebras de linha preservadas.
-
-Exemplo:
+Escreva uma ou mais mensagens. Quando houver múltiplas mensagens, o sistema pode sortear uma delas durante o lote.
 
 ```text
-Boa tarde!
-Voce acabou de ganhar 1 mes de IPTV gratuito!
-
-Para reinvidicar responda com "Quero"
-
-(Condicoes sao aplicadas para resgate da promocao)
-```
-
-Se quiser deixar mais de uma mensagem para sorteio aleatorio, separe usando:
-
-```text
----
-```
-
-Exemplo:
-
-```text
-Mensagem 1
-
----
-
-Mensagem 2
+Olá, tudo bem?
+Esta é uma mensagem de exemplo.
 ```
 
 ## Estrutura
 
 ```text
 .
-|-- Planilha/
-|   |-- COMO_USAR.txt
-|   |-- mensagens.txt
-|   `-- numeros.csv
+|-- server.js
 |-- public/
-|   `-- index.html
+|-- Planilha/
+|   |-- numeros.csv
+|   `-- mensagens.txt
 |-- package.json
-|-- package-lock.json
-`-- server.js
+`-- README.md
 ```
 
-## Uso no dia a dia
+## Boas Práticas
 
-1. Rode o projeto com `npm start`
-2. Leia o QR Code no navegador
-3. Use o painel para envio individual ou envio em lote
-4. Se quiser trocar a conta conectada, use o botao para desconectar e gerar um novo QR Code
-
-## Observacao
-
-Depois que a sessao for conectada uma vez, ela fica salva localmente para nao precisar ler o QR toda hora. Se quiser forcar uma nova conexao, basta usar a opcao de desconectar no painel.
+- Use apenas listas autorizadas.
+- Faça um teste com poucos números antes de rodar um lote grande.
+- Evite mensagens repetitivas em alta frequência.
+- Não versione sessões, listas reais ou dados sensíveis.
